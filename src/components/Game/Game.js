@@ -5,6 +5,8 @@ import { WORDS } from '../../data';
 import { Form } from '../Form';
 import { NUM_OF_GUESSES_ALLOWED } from '../../constants';
 import { Guess } from '../Guess';
+import { WonBanner } from '../WonBanner';
+import { LostBanner } from '../LostBanner';
 
 // Pick a random word on every pageload.
 const answer = sample(WORDS);
@@ -18,6 +20,7 @@ function Game() {
   useEffect(() => {
     if (guesses.includes(answer)) {
       setStatus('won');
+      return;
     }
 
     if (guesses.length === NUM_OF_GUESSES_ALLOWED) {
@@ -40,18 +43,10 @@ function Game() {
         <Form setGuesses={setGuesses} />
       )}
       {status === 'won' && (
-        <div className="happy banner">
-          <p>
-            <strong>Congratulations!</strong> Got it in
-            {' '}
-            <strong>{guesses.length} guesses</strong>.
-          </p>
-        </div>
+        <WonBanner numberOfGuesses={guesses.length} />
       )}
       {status === 'lost' && (
-        <div className="sad banner">
-          <p>Sorry, the correct answer is <strong>{answer}</strong>.</p>
-        </div>
+        <LostBanner answer={answer} />
       )}
     </>
   );
